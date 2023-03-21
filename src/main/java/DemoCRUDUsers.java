@@ -284,6 +284,62 @@ public class DemoCRUDUsers {
         return isAdmin;
     }
 
+    static void userInsert() throws SQLException {
+        String usernamekb = null, passwordkb = null;
+        User u = new User(usernamekb, passwordkb);
+
+        System.out.println("Username: ");
+        usernamekb = sc.nextLine();
+        System.out.println("Password: ");
+        passwordkb = sc.nextLine();
+        u.setUsername(usernamekb);
+        u.setPassword(passwordkb);
+        boolean isAdded = insert(u);
+        if (isAdded)
+            System.out.println(usernamekb + " user added successfully!");
+        else
+            System.out.println("ERROR");
+    }
+
+    static void userUpdate() throws SQLException {
+        String usernamekb = null, passwordkb = null;
+        User u = new User(usernamekb, passwordkb);
+        System.out.println("Update username's password : ");
+        usernamekb = sc.nextLine();
+        System.out.println("New password: ");
+        passwordkb = sc.nextLine();
+        u.setUsername(usernamekb);
+        u.setPassword(passwordkb);
+        boolean newPass = update(u);
+        if (newPass)
+            System.out.println(usernamekb + " user's password updated successfully!");
+        else
+            System.out.println("ERROR");
+    }
+
+    static void userPrint() throws SQLException {
+        List<User> result = readAllUsers();
+        for (User r : result)
+            System.out.println(r);
+    }
+
+    static void userDelete() throws SQLException {
+        String usernamekb = null, passwordkb = null;
+        User u = new User(usernamekb, passwordkb);
+        System.out.println("Username to delete : ");
+        usernamekb = sc.nextLine();
+        System.out.println("Password: ");
+        passwordkb = sc.nextLine();
+        u.setUsername(usernamekb);
+        u.setPassword(passwordkb);
+        boolean deleteUser = delete(u);
+        if (deleteUser)
+            System.out.println(usernamekb + " user deleted successfully!");
+        else
+            System.out.println("ERROR");
+    }
+
+
     static void adminMenu(long id) throws SQLException {
 
         String usernamekb = null, passwordkb = null;
@@ -297,48 +353,16 @@ public class DemoCRUDUsers {
                 x = DemoCRUDUsers.menuUsers();
                 switch (x) {
                     case 1:
-                        System.out.println("Username: ");
-                        usernamekb = sc.nextLine();
-                        System.out.println("Password: ");
-                        passwordkb = sc.nextLine();
-                        u.setUsername(usernamekb);
-                        u.setPassword(passwordkb);
-                        boolean isAdded = insert(u);
-                        if (isAdded)
-                            System.out.println(usernamekb + " user added successfully!");
-                        else
-                            System.out.println("ERROR");
+                        userInsert();
                         break;
                     case 2:
-                        List<User> result = readAllUsers();
-                        for (User r : result)
-                            System.out.println(r);
+                        userPrint();
                         break;
                     case 3:
-                        System.out.println("Update username's password : ");
-                        usernamekb = sc.nextLine();
-                        System.out.println("New password: ");
-                        passwordkb = sc.nextLine();
-                        u.setUsername(usernamekb);
-                        u.setPassword(passwordkb);
-                        boolean newPass = update(u);
-                        if (newPass)
-                            System.out.println(usernamekb + " user's password updated successfully!");
-                        else
-                            System.out.println("ERROR");
+                        userUpdate();
                         break;
                     case 4:
-                        System.out.println("Username to delete : ");
-                        usernamekb = sc.nextLine();
-                        System.out.println("Password: ");
-                        passwordkb = sc.nextLine();
-                        u.setUsername(usernamekb);
-                        u.setPassword(passwordkb);
-                        boolean deleteUser = delete(u);
-                        if (deleteUser)
-                            System.out.println(usernamekb + " user deleted successfully!");
-                        else
-                            System.out.println("ERROR");
+                        userDelete();
                         break;
                     case 5:
                         int y = 0;
@@ -346,43 +370,16 @@ public class DemoCRUDUsers {
                             y = DemoCRUDUsers.menuFood();
                             switch (y) {
                                 case 1:
-                                    System.out.println("Insert a food please: ");
-                                    String foodName = sc.nextLine();
-                                    Food f = new Food(foodName);
-                                    boolean success = insertFoodForAUser(f, id);
-                                    if (success)
-                                        System.out.println("Food logged successfully");
-                                    else
-                                        System.out.println("ERROR");
+                                    foodInsert(id);
                                     break;
                                 case 2:
-                                    System.out.println("Client " + id + " food list is :");
-                                    List<Food> foodList = readFoodOfAUser(id);
-                                    for (Food fl : foodList)
-                                        System.out.println(fl);
+                                    foodPrint(id);
                                     break;
                                 case 3:
-                                    System.out.println("Food to replace:");
-                                    String oldFood = sc.nextLine();
-                                    System.out.println("Enter the new food");
-                                    String newFood = sc.nextLine();
-                                    Food oldf = new Food(oldFood);
-                                    Food newf = new Food(newFood);
-                                    boolean successUpdate = updateFoodOfAUser(oldf, newf, id);
-                                    if (successUpdate)
-                                        System.out.println("Food updated successfully");
-                                    else
-                                        System.out.println("ERROR");
+                                    foodReplace(id);
                                     break;
                                 case 4:
-                                    System.out.println("Food to delete from list:");
-                                    String deleteFood = sc.nextLine();
-                                    Food deletf = new Food(deleteFood);
-                                    boolean successDelete = deleteFoodForAUser(deletf, id);
-                                    if (successDelete)
-                                        System.out.println("Food deleted successfully");
-                                    else
-                                        System.out.println("ERROR");
+                                    foodDelete(id);
                                     break;
                                 case -1:
                                     break;
@@ -402,6 +399,49 @@ public class DemoCRUDUsers {
         }
     }
 
+    static void foodInsert(long id) throws SQLException {
+        System.out.println("Insert a food please: ");
+        String foodName = sc.nextLine();
+        Food f = new Food(foodName);
+        boolean success = insertFoodForAUser(f, id);
+        if (success)
+            System.out.println("Food logged successfully");
+        else
+            System.out.println("ERROR");
+    }
+
+    static void foodPrint(long id) throws SQLException {
+        System.out.println("Client " + id + " food list is :");
+        List<Food> foodList = readFoodOfAUser(id);
+        for (Food fl : foodList)
+            System.out.println(fl);
+    }
+
+    static void foodReplace(long id) throws SQLException {
+        System.out.println("Food to replace:");
+        String oldFood = sc.nextLine();
+        System.out.println("Enter the new food");
+        String newFood = sc.nextLine();
+        Food oldf = new Food(oldFood);
+        Food newf = new Food(newFood);
+        boolean successUpdate = updateFoodOfAUser(oldf, newf, id);
+        if (successUpdate)
+            System.out.println("Food updated successfully");
+        else
+            System.out.println("ERROR");
+    }
+
+    static void foodDelete(long id) throws SQLException {
+        System.out.println("Food to delete from list:");
+        String deleteFood = sc.nextLine();
+        Food deletf = new Food(deleteFood);
+        boolean successDelete = deleteFoodForAUser(deletf, id);
+        if (successDelete)
+            System.out.println("Food deleted successfully");
+        else
+            System.out.println("ERROR");
+    }
+
     static void notAdminMenu(long id) throws SQLException {
 
         while (true) {
@@ -410,43 +450,16 @@ public class DemoCRUDUsers {
                 y = DemoCRUDUsers.menuFood();
                 switch (y) {
                     case 1:
-                        System.out.println("Insert a food please: ");
-                        String foodName = sc.nextLine();
-                        Food f = new Food(foodName);
-                        boolean success = insertFoodForAUser(f, id);
-                        if (success)
-                            System.out.println("Food logged successfully");
-                        else
-                            System.out.println("ERROR");
+                        foodInsert(id);
                         break;
                     case 2:
-                        System.out.println("Client " + id + " food list is :");
-                        List<Food> foodList = readFoodOfAUser(id);
-                        for (Food fl : foodList)
-                            System.out.println(fl);
+                        foodPrint(id);
                         break;
                     case 3:
-                        System.out.println("Food to replace:");
-                        String oldFood = sc.nextLine();
-                        System.out.println("Enter the new food");
-                        String newFood = sc.nextLine();
-                        Food oldf = new Food(oldFood);
-                        Food newf = new Food(newFood);
-                        boolean successUpdate = updateFoodOfAUser(oldf, newf, id);
-                        if (successUpdate)
-                            System.out.println("Food updated successfully");
-                        else
-                            System.out.println("ERROR");
+                        foodReplace(id);
                         break;
                     case 4:
-                        System.out.println("Food to delete from list:");
-                        String deleteFood = sc.nextLine();
-                        Food deletf = new Food(deleteFood);
-                        boolean successDelete = deleteFoodForAUser(deletf, id);
-                        if (successDelete)
-                            System.out.println("Food deleted successfully");
-                        else
-                            System.out.println("ERROR");
+                        foodDelete(id);
                         break;
                     case -1:
                         break;
@@ -460,4 +473,4 @@ public class DemoCRUDUsers {
     }
 
 
-    }
+}
