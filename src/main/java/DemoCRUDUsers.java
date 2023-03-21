@@ -5,6 +5,8 @@ import java.util.Scanner;
 
 public class DemoCRUDUsers {
 
+    static Scanner sc = new Scanner(System.in);
+
 //    public static void main(String[] args) throws SQLException {
 //
 //        DemoCRUDUsers object = new DemoCRUDUsers();
@@ -283,9 +285,10 @@ public class DemoCRUDUsers {
     }
 
     static void adminMenu(long id) throws SQLException {
-        Scanner sc = new Scanner(System.in);
+
         String usernamekb = null, passwordkb = null;
         User u = new User(usernamekb, passwordkb);
+
         System.out.println("User is ADMIN");
 
         while (true) {
@@ -400,7 +403,6 @@ public class DemoCRUDUsers {
     }
 
     static void notAdminMenu(long id) throws SQLException {
-        Scanner sc = new Scanner(System.in);
 
         while (true) {
             int y = 0;
